@@ -11,7 +11,7 @@
       "options": {
         "commands": [
           {
-            "command": "mv dist/apps/app-one apps/app-one/dist && cd apps/app-one && firebase deploy --project app-one-nx --only hosting --token $FIREBASE_TOKEN --non-interactive"
+            "command": "mv dist/apps/app-one apps/app-one/dist && cd apps/app-one && firebase deploy --project $FIREBASE_PROJECT_APP_ONE --only hosting --token $FIREBASE_TOKEN --non-interactive"
           }
         ]
       }
