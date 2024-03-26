@@ -3,7 +3,7 @@ export function App() {
     <div>
       <h1>App two deployed by CI</h1>
       <h2>Firebase</h2>
-      <h3>Firebase App: app-two-nx</h3>
+      <h3>Firebase: app-two-nx</h3>
     </div>
   );
 }
