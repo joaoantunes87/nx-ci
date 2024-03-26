@@ -9,4 +9,21 @@ jobs:
   main:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello GitHub Actions!"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set Node.js 18.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install --frozen-lockfile
+
+      - name: Build app using nx
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: nx build app-one
