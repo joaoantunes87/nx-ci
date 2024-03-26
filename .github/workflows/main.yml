@@ -54,6 +54,8 @@ jobs:
         run: yarn nx affected -t build --parallel=3
 
       - name: Deploy affected apps for main
+      github.ref == 'refs/heads/main'
+        if: ${{ github.ref == 'refs/heads/main' }}
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
         run: yarn nx affected -t deploy --parallel=3
