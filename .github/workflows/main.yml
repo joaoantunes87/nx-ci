@@ -13,13 +13,13 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Node.js 18.x
+      - name: Set Node.js 20.x
         uses: actions/setup-node@v4
         with:
-          node-version: 18.x
+          node-version: 20.x
 
       - name: Restore cached npm dependencies
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: node_modules
           key: npm-dependencies-${{ hashFiles('yarn.lock') }}
@@ -30,12 +30,13 @@ jobs:
           cmd: install --frozen-lockfile
 
       - name: Cache npm dependencies
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: node_modules
           key: npm-dependencies-${{ hashFiles('yarn.lock') }}
 
-      - name: Build app using nx
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: nx build app-one
+      - uses: nrwl/nx-set-shas@v4
+      # This line is needed for nx affected to work when CI is running on a PR
+      - run: git branch --track main origin/main
+      - run: yarn nx affected -t lint test --parallel=3
+      - run: yarn nx affected -t build --parallel=3
