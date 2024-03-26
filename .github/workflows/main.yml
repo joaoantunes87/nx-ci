@@ -52,3 +52,8 @@ jobs:
 
       - name: Build affected projects
         run: yarn nx affected -t build --parallel=3
+
+      - name: Deploy affected apps for main
+        env:
+          FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
+        run: yarn nx affected -t deploy --parallel=3
