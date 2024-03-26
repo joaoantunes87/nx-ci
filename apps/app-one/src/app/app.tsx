@@ -1,7 +1,7 @@
 export function App() {
   return (
     <div>
-      <h1>App One on firebase</h1>
+      <h1>App one deployed by CI</h1>
     </div>
   );
 }

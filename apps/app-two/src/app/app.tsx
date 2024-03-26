@@ -1,7 +1,7 @@
 export function App() {
   return (
     <div>
-      <h1>App Two</h1>
+      <h1>App two deployed by CI</h1>
     </div>
   );
 }
