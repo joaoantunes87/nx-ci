@@ -35,7 +35,14 @@ jobs:
           path: node_modules
           key: npm-dependencies-${{ hashFiles('yarn.lock') }}
 
-      - name: Build app using nx
-        uses: borales/actions-yarn@v4
-        with:
-          cmd: nx build app-one
+      - name: Run lint and tests for affected projects
+        uses: nrwl/nx-set-shas@v3
+        # This line is needed for nx affected to work when CI is running on a PR
+        run: git branch --track main origin/main
+        run: yarn nx affected -t lint test --parallel=3
+
+      - name: build affected projects
+        uses: nrwl/nx-set-shas@v3
+        # This line is needed for nx affected to work when CI is running on a PR
+        run: git branch --track main origin/main
+        run: yarn nx affected -t build --parallel=3
