@@ -39,8 +39,16 @@ jobs:
           path: node_modules
           key: npm-dependencies-${{ hashFiles('yarn.lock') }}
 
-      - uses: nrwl/nx-set-shas@v4
+      - name: Derive NX_BASE and NX_HEAD for Affected
+        uses: nrwl/nx-set-shas@v4
+
       # This line is needed for nx affected to work when CI is running on a PR
-      - run: git branch --track main origin/main
-      - run: yarn nx affected -t lint test --parallel=3
-      - run: yarn nx affected -t build --parallel=3
+      - name: Affected for PR
+        if: ${{contains(github.ref, 'refs/pull/')}}
+        run: git branch --track main origin/main
+
+      - name: Lint and test affected projects
+        run: yarn nx affected -t lint test --parallel=3
+
+      - name: Build affected projects
+        run: yarn nx affected -t build --parallel=3
