@@ -128,7 +128,7 @@ jobs:
       - name: Sets Azure environment preview as default
         run: echo "AZURE_ENVIRONMENT=$GITHUB_HEAD_REF" >> $GITHUB_ENV
 
-      - name: Deploy affected apps to Azure
+      - name: Delete deployed preview web apps for affected apps on Azure
         env:
           AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
           AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
