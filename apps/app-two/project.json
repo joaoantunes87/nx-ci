@@ -21,7 +21,7 @@
       "options": {
         "commands": [
           {
-            "command": "yarn swa deploy ./dist/apps/app-two -d $AZURE_TOKEN_APP_TWO"
+            "command": "yarn swa deploy ./dist/apps/app-two -d a18788332d32857cb0e43454a3939f2318b330d8148c8d23181e5c6e82ca5ec44-cb25c174-2442-4136-b416-6c45ff029c8d010362501"
           }
         ]
       }
