@@ -67,7 +67,7 @@ jobs:
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
       - name: Debug affected aps
-        run: nx print-affected -t deploy-azure
+        run: yarn nx print-affected -t deploy-azure
 
       - name: Deploy affected apps to Azure
         env:
