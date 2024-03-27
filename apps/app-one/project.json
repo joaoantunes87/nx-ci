@@ -15,6 +15,16 @@
           }
         ]
       }
+    },
+    "delete-azure-environment": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "az staticwebapp environment delete -n $AZURE_TOKEN_APP_ONE_NAME -g $AZURE_RESOURCE_GROUP --environment-name $AZURE_ENVIRONMENT"
+          }
+        ]
+      }
     }
   }
 }
