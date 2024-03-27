@@ -88,6 +88,20 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Derive NX_BASE and NX_HEAD for Affected
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Affected for PR
+        run: git branch --track main origin/main
+
+      - name: Install nx
+        run: npm install -g nx
+
       - name: Azure login
         uses: azure/login@v2
         with:
