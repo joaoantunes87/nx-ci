@@ -21,7 +21,7 @@
       "options": {
         "commands": [
           {
-            "command": "az staticwebapp environment delete -n app-one-nx -g nx-ci --environment-name $AZURE_ENVIRONMENT"
+            "command": "az staticwebapp environment delete -n app-one-nx -g nx-ci --environment-name $AZURE_ENVIRONMENT -y"
           }
         ]
       }
