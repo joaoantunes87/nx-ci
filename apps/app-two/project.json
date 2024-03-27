@@ -21,7 +21,7 @@
       "options": {
         "commands": [
           {
-            "command": "yarn swa deploy ./dist/apps/app-two --env production --api-version 20 -d $AZURE_TOKEN_APP_TWO"
+            "command": "yarn swa deploy ./dist/apps/app-two --env $AZURE_ENVIRONMENT --api-version 20 -d $AZURE_TOKEN_APP_TWO"
           }
         ]
       }

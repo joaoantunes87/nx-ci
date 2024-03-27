@@ -4,6 +4,7 @@ export function App() {
       <h1>App two deployed by CI</h1>
       <h2>Azure</h2>
       <h3>Azure: app-two-nx</h3>
+      <h4>Production</h4>
     </div>
   );
 }

@@ -55,6 +55,11 @@ jobs:
       - name: Build affected projects
         run: yarn nx affected -t build --parallel=3
 
+      - name: Sets Azure environment production for deploy when in main
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
+
       - name: Deploy affected apps to Azure
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
