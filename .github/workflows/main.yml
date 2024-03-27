@@ -66,6 +66,9 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
+      - name: Debug affected aps
+        run: nx print-affected -t deploy-azure
+
       - name: Deploy affected apps to Azure
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
