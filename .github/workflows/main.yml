@@ -55,10 +55,12 @@ jobs:
       - name: Build affected projects
         run: yarn nx affected -t build --parallel=3
 
+      - name: Sets Azure environment preview as default
+        run: echo "AZURE_ENVIRONMENT=preview" >> $GITHUB_ENV
+
       - name: Sets Azure environment production for deploy when in main
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
+        run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
       - name: Deploy affected apps to Azure
         env:
