@@ -66,9 +66,6 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
-      - name: Debug affected aps
-        run: yarn nx show projects --affected -t deploy-azure --select=projects
-
       - name: Deploy affected apps to Azure
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
@@ -96,15 +93,29 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Restore cached npm dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install --frozen-lockfile
+
+      - name: Cache npm dependencies
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
 
-      - name: Install nx
-        run: npm install -g nx
-
       # DEBUG: TO REMOVE
-      - name: Lint and test affected projects
-        run: nx affected -t lint test --parallel=3
+      - name: Debug affected aps
+        run: yarn nx show projects --affected -t deploy-azure --select=projects
 
       # - name: Affected for PR
       #   run: git branch --track main origin/main
