@@ -9,11 +9,11 @@ import App from './app/app';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world app two!</div>,
+    element: <div>Hello world app one!</div>,
   },
   {
     path: "/about",
-    element: <div>About app two</div>,
+    element: <div>About app one</div>,
   },
   {
     path: "/app",
