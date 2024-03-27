@@ -9,7 +9,7 @@ import App from './app/app';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world app one!</div>,
+    element: <div>Hello world app one changed!</div>,
   },
   {
     path: "/about",
