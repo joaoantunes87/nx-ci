@@ -93,33 +93,37 @@ jobs:
         with:
           node-version: 20.x
 
+      - name: Restore cached npm dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install --frozen-lockfile
+
+      - name: Cache npm dependencies
+        uses: actions/cache/save@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
-
-      - name: Affected for PR
-        run: git branch --track main origin/main
-
-      - name: Install nx
-        run: npm install -g nx
 
       - name: Azure login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure CLI script
-        uses: azure/cli@v2
-        with:
-          azcliversion: 2.30.0
-          inlineScript: |
-            az account show
-
       - name: Sets Azure environment preview as default
         run: echo "AZURE_ENVIRONMENT=$GITHUB_HEAD_REF" >> $GITHUB_ENV
 
-      - name: Deploy affected apps to Azure
+      - name: Delete deployed preview web apps for affected apps on Azure
         env:
-          AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
-          AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
-          AZURE_APP_TWO_NAME: ${{ env.AZURE_APP_TWO_NAME }}
+          AZURE_RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          AZURE_APP_ONE_NAME: ${{ vars.AZURE_APP_ONE_NAME }}
+          AZURE_APP_TWO_NAME: ${{ vars.AZURE_APP_TWO_NAME }}
         run: yarn nx affected -t delete-azure-environment --parallel=1

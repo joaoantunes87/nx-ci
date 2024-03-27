@@ -21,7 +21,7 @@
       "options": {
         "commands": [
           {
-            "command": "az staticwebapp environment delete -n $AZURE_APP_TWO_NAME -g $AZURE_RESOURCE_GROUP --environment-name $AZURE_ENVIRONMENT"
+            "command": "az staticwebapp environment delete -n $AZURE_APP_TWO_NAME -g $AZURE_RESOURCE_GROUP --environment-name $AZURE_ENVIRONMENT -y"
           }
         ]
       }
