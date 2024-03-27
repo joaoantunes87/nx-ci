@@ -77,7 +77,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Close Pull Request Job
 
-    # needed for nrwl/nx-set-shas@v4 to work on main branch (https://github.com/nrwl/nx-set-shas/issues/89#issuecomment-1519178667)
     permissions:
       contents: read
       actions: read
