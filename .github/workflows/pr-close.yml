@@ -1,16 +1,17 @@
 name: PR Cleanup
 on:
   pull_request:
-    types: [closed]
+    # types: [closed]
 
 jobs:
   close:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Azure CLI script
+        uses: azure/cli@v2
         with:
-          fetch-depth: 0
-
-      - name: Closed merge request
-        run: "echo merge request closed - $GITHUB_HEAD_REF"
+          azcliversion: 2.30.0
+          inlineScript: |
+            az account show
+            az storage -h
