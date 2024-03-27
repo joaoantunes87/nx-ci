@@ -48,6 +48,10 @@ jobs:
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
 
+      # DEBUG : REMOVE
+      - name: ECHO ENVS
+        run: echo "ENVS - ${{ env.AZURE_RESOURCE_GROUP }} ${{ env.AZURE_APP_ONE_NAME }} ${{ env.AZURE_APP_TWO_NAME }}!"
+
       # This line is needed for nx affected to work when CI is running on a PR
       - name: Affected for PR
         if: ${{contains(github.ref, 'refs/pull/')}}
@@ -123,7 +127,11 @@ jobs:
 
       - name: Delete deployed preview web apps for affected apps on Azure
         env:
-          AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
-          AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
-          AZURE_APP_TWO_NAME: ${{ env.AZURE_APP_TWO_NAME }}
+          AZURE_RESOURCE_GROUP: nx-ci
+          AZURE_APP_ONE_NAME: app-one-nx
+          AZURE_APP_TWO_NAME: app-two-nx
+        # env:
+        #   AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
+        #   AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
+        #   AZURE_APP_TWO_NAME: ${{ env.AZURE_APP_TWO_NAME }}
         run: yarn nx affected -t delete-azure-environment --parallel=1
