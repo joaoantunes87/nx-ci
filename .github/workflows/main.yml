@@ -95,9 +95,12 @@ jobs:
 
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
+      # DEBUG: TO REMOVE
+      - name: Lint and test affected projects
+        run: yarn nx affected -t lint test --parallel=3
 
-      - name: Affected for PR
-        run: git branch --track main origin/main
+      # - name: Affected for PR
+      #   run: git branch --track main origin/main
 
       - name: Install nx
         run: npm install -g nx
