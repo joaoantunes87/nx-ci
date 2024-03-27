@@ -67,7 +67,7 @@ jobs:
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
       - name: Debug affected aps
-        run: yarn nx print-affected -t deploy-azure
+        run: yarn nx show projects --affected -t deploy-azure --select=projects
 
       - name: Deploy affected apps to Azure
         env:
@@ -104,7 +104,7 @@ jobs:
 
       # DEBUG: TO REMOVE
       - name: Lint and test affected projects
-        run: yarn nx affected -t lint test --parallel=3
+        run: nx affected -t lint test --parallel=3
 
       # - name: Affected for PR
       #   run: git branch --track main origin/main
@@ -129,4 +129,4 @@ jobs:
           AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
           AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
           AZURE_APP_TWO_NAME: ${{ env.AZURE_APP_TWO_NAME }}
-        run: yarn nx affected -t delete-azure-environment --parallel=1
+        run: nx affected -t delete-azure-environment --parallel=1
