@@ -8,6 +8,8 @@ on:
 jobs:
   main:
     runs-on: ubuntu-latest
+
+    # needed for nrwl/nx-set-shas@v4 to work on main branch
     permissions:
       contents: read
       actions: read
@@ -53,7 +55,13 @@ jobs:
       - name: Build affected projects
         run: yarn nx affected -t build --parallel=3
 
-      - name: Deploy affected apps for main
+      - name: Deploy affected apps to Azure
+        env:
+          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
+          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
+        run: yarn nx affected -t deploy-azure --parallel=3
+
+      - name: Deploy affected apps to Firebase for main
         if: ${{ github.ref == 'refs/heads/main' }}
         env:
           FIREBASE_TOKEN: ${{ secrets.firebaseToken }}
