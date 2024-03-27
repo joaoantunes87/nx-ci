@@ -59,7 +59,7 @@ jobs:
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
           AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
-        run: yarn nx affected -t deploy-azure --parallel=3
+        run: yarn nx affected -t deploy-azure --parallel=1
 
       - name: Deploy affected apps to Firebase for main
         if: ${{ github.ref == 'refs/heads/main' }}
