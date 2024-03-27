@@ -15,6 +15,16 @@
           }
         ]
       }
+    },
+    "deploy-azure": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "yarn swa deploy ./dist/apps/app-one --api-version 20 --env $AZURE_ENVIRONMENT -d $AZURE_TOKEN_APP_ONE"
+          }
+        ]
+      }
     }
   }
 }
