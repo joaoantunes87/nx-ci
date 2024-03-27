@@ -113,13 +113,6 @@ jobs:
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
 
-      # DEBUG: TO REMOVE
-      - name: Debug affected aps
-        run: yarn nx show projects --affected -t deploy-azure --select=projects
-
-      # - name: Affected for PR
-      #   run: git branch --track main origin/main
-
       - name: Azure login
         uses: azure/login@v2
         with:
@@ -140,4 +133,4 @@ jobs:
           AZURE_RESOURCE_GROUP: ${{ env.AZURE_RESOURCE_GROUP }}
           AZURE_APP_ONE_NAME: ${{ env.AZURE_APP_ONE_NAME }}
           AZURE_APP_TWO_NAME: ${{ env.AZURE_APP_TWO_NAME }}
-        run: nx affected -t delete-azure-environment --parallel=1
+        run: yarn nx affected -t delete-azure-environment --parallel=1
