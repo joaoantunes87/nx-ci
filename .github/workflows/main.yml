@@ -10,6 +10,7 @@ on:
 
 jobs:
   main:
+    name: 'Main'
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
 
@@ -97,6 +98,7 @@ jobs:
   #     run: yarn nx affected -t deploy-azure --parallel=1
   deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    workflows: ['Main']
     runs-on: ubuntu-latest
     name: Deploy
 
