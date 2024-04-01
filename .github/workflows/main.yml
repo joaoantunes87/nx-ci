@@ -73,22 +73,28 @@ jobs:
           name: dist
           path: dist
 
-      - name: Clear dist
-        # if: ${{ github.ref == 'refs/heads/main' }}
-        run: rm -rf dist
+  deploy-preview:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    environment: preview
+    runs-on: ubuntu-latest
 
-      - name: Download a single artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
+    - name: Restore cached npm dependencies
+      uses: actions/cache/restore@v4
+      with:
+        path: node_modules
+        key: npm-dependencies-${{ hashFiles('yarn.lock') }}
 
-      - name: Deploy affected apps to Azure
-        environment: preview
-        env:
-          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
-          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
-        run: yarn nx affected -t deploy-azure --parallel=1
+    - name: Download a single artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist
+
+    - name: Deploy affected apps to Azure
+      env:
+        AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
+        AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
+      run: yarn nx affected -t deploy-azure --parallel=1
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
