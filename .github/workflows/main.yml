@@ -116,13 +116,6 @@ jobs:
           name: dist
           path: dist
 
-      - name: Derive NX_BASE and NX_HEAD for Affected
-        uses: nrwl/nx-set-shas@v4
-
-      - name: Affected for PR
-        if: ${{contains(github.ref, 'refs/pull/')}}
-        run: git branch --track main origin/main
-
       - name: Deploy affected apps to Azure
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
