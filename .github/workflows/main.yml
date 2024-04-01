@@ -103,34 +103,31 @@ jobs:
     environment: preview
     name: Deploy
 
-    - name: Restore cached npm dependencies
-      uses: actions/cache/restore@v4
-      with:
-        path: node_modules
-        key: npm-dependencies-${{ hashFiles('yarn.lock') }}
-
-    - name: Download a single artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: dist
-        path: dist
-
-    - name: Derive NX_BASE and NX_HEAD for Affected
-      uses: nrwl/nx-set-shas@v4
-
-    - name: Affected for PR
-      if: ${{contains(github.ref, 'refs/pull/')}}
-      run: git branch --track main origin/main
-
-    - name: Deploy affected apps to Azure
-      env:
-        AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
-        AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
-      run: yarn nx affected -t deploy-azure --parallel=1
-
     steps:
-      - name: Echo debug
-        run: echo Done
+      - name: Restore cached npm dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Derive NX_BASE and NX_HEAD for Affected
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Affected for PR
+        if: ${{contains(github.ref, 'refs/pull/')}}
+        run: git branch --track main origin/main
+
+      - name: Deploy affected apps to Azure
+        env:
+          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
+          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
+        run: yarn nx affected -t deploy-azure --parallel=1
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
