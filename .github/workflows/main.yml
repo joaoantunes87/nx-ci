@@ -73,7 +73,7 @@ jobs:
           name: dist
           path: dist
 
-  deploypreview:
+  deploy_preview_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     environment: preview
     runs-on: ubuntu-latest
