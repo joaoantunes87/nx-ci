@@ -84,6 +84,7 @@ jobs:
           path: dist
 
       - name: Deploy affected apps to Azure
+        environment: preview
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
           AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
