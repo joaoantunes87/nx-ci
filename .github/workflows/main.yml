@@ -271,7 +271,7 @@ jobs:
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE_PRODUCTION }}
           AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO_PRODUCTION }}
-        run: yarn nx affected -t deploy-azure --parallel=1
+        run: yarn nx run-many -t deploy-azure --parallel=1
 
   # TODO: remove job we do not want previews
   close_pull_request:
