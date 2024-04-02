@@ -72,7 +72,7 @@ jobs:
           path: dist
 
   deploy_production_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
     needs: main
     runs-on: ubuntu-latest
     environment: production
@@ -98,16 +98,8 @@ jobs:
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
 
-      - name: Affected for PR
-        if: ${{contains(github.ref, 'refs/pull/')}}
-        run: git branch --track main origin/main
-
-      - name: Sets Azure environment preview as default
-        run: echo "AZURE_ENVIRONMENT=$(echo "$GITHUB_HEAD_REF" | sed 's/[^[:alnum:]]//g' | cut -c1-16)" >> $GITHUB_ENV
-
       - name: Sets Azure environment production for deploy when in main
-        if: ${{ github.ref == 'refs/heads/main' }}
-        run: echo "AZURE_ENVIRONMENT=production" >> $
+        run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
       - name: Deploy affected apps to Azure
         env:
