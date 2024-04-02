@@ -196,8 +196,8 @@ jobs:
 
       - name: Deploy affected apps to Azure
         env:
-          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
-          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
+          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE_STAGING }}
+          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO_STAGING }}
         run: yarn nx affected -t deploy-azure --parallel=1
 
   build_production:
@@ -206,27 +206,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_staging
     environment: production
-    # need to pass this way for deploy_production to be able to use it, without using environment: production because this would require deploy_production to be also reviewed and not only build_production
-    outputs:
-      # AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
-      # AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
-      # azureTokenAppOne: 2df9529f57024f0155e386485b4728462d14f2350c716c7ddc1fdb03c1a00bc55-2ba5d840-7d14-4277-8907-84c836a81d6c010362489
-      # azureTokenAppTwo: 6985138165f9f6cbdec5dce7b1d348df8480ea7beb795a7b02ce66cf33408a4c5-0dc7a71e-fa91-402c-9541-d7e738ea7da5010366252
-      azureTokenAppOne: ${{ steps.set_vars.outputs.azureTokenAppOne }}
-      azureTokenAppTwo: ${{ steps.set_vars.outputs.azureTokenAppTwo }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Set Variables for output
-        id: set_vars
-        env:
-          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
-          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
-        run: |
-          echo "azureTokenAppOne=$AZURE_TOKEN_APP_ONE" >> $GITHUB_OUTPUT && echo "azureTokenAppTwo=$AZURE_TOKEN_APP_TWO" >> $GITHUB_OUTPUT
 
       - name: Set Node.js 20.x
         uses: actions/setup-node@v4
@@ -285,8 +269,8 @@ jobs:
 
       - name: Deploy affected apps to Azure
         env:
-          AZURE_TOKEN_APP_ONE: ${{ needs.build_production.outputs.azureTokenAppOne }}
-          AZURE_TOKEN_APP_TWO: ${{ needs.build_production.outputs.azureTokenAppTwo }}
+          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE_PRODUCTION }}
+          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO_PRODUCTION }}
         run: yarn nx affected -t deploy-azure --parallel=1
 
   # TODO: remove job we do not want previews
