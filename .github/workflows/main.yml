@@ -108,7 +108,7 @@ jobs:
         run: yarn nx affected -t deploy-azure --parallel=1
 
   deploy_staging_job:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
+    if: (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
     needs: main
     runs-on: ubuntu-latest
     environment: staging
