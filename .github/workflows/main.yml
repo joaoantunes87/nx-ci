@@ -76,7 +76,7 @@ jobs:
     needs: main
     runs-on: ubuntu-latest
     environment: production
-    name: Deploy
+    name: Deploy production
 
     steps:
       - uses: actions/checkout@v4
@@ -99,6 +99,47 @@ jobs:
         uses: nrwl/nx-set-shas@v4
 
       - name: Sets Azure environment production for deploy when in main
+        run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
+
+      - name: Deploy affected apps to Azure
+        env:
+          AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE }}
+          AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO }}
+        run: yarn nx affected -t deploy-azure --parallel=1
+
+  deploy_staging_job:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
+    needs: main
+    runs-on: ubuntu-latest
+    environment: staging
+    name: Deploy staging/preview
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore cached npm dependencies
+        uses: actions/cache/restore@v4
+        with:
+          path: node_modules
+          key: npm-dependencies-${{ hashFiles('yarn.lock') }}
+
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Derive NX_BASE and NX_HEAD for Affected
+        uses: nrwl/nx-set-shas@v4
+
+      - name: Sets Azure environment preview
+        if: contains(github.ref, 'refs/pull/')
+        run: echo "AZURE_ENVIRONMENT=$(echo "$GITHUB_HEAD_REF" | sed 's/[^[:alnum:]]//g' | cut -c1-16)" >> $GITHUB_ENV
+
+      - name: Sets Azure environment production for deploy when in main
+        if: github.ref == 'refs/heads/main'
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
       - name: Deploy affected apps to Azure
