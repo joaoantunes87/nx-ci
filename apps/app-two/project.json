@@ -17,7 +17,7 @@
       "options": {
         "commands": [
           {
-            "command": "echo AZURE_ENVIRONMENT -- $AZURE_ENVIRONMENT && yarn swa deploy ./dist/apps/app-two --env $AZURE_ENVIRONMENT -d $AZURE_TOKEN_APP_TWO"
+            "command": "yarn swa deploy ./dist/apps/app-two --env $AZURE_ENVIRONMENT -d $AZURE_TOKEN_APP_TWO"
           }
         ]
       }

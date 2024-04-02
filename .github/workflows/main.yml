@@ -8,16 +8,18 @@ on:
     branches:
       - main
 
+permissions:
+  # needed for nrwl/nx-set-shas@v4 to work on main branch (https://github.com/nrwl/nx-set-shas/issues/89#issuecomment-1519178667)
+  contents: read
+  actions: read
+  # needed for azure cli
+  id-token: write
+
 jobs:
   main:
     name: 'Main'
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-
-    # needed for nrwl/nx-set-shas@v4 to work on main branch (https://github.com/nrwl/nx-set-shas/issues/89#issuecomment-1519178667)
-    permissions:
-      contents: read
-      actions: read
 
     steps:
       - uses: actions/checkout@v4
@@ -117,11 +119,6 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     name: Close Pull Request Job
-
-    permissions:
-      contents: read
-      actions: read
-      id-token: write
 
     steps:
       - uses: actions/checkout@v4
