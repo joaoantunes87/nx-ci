@@ -264,6 +264,9 @@ jobs:
       - name: Derive NX_BASE and NX_HEAD for Affected
         uses: nrwl/nx-set-shas@v4
 
+      - name: Affected
+        run: git branch --track main origin/main
+
       - name: Sets Azure environment production for deploy when in main
         run: echo "AZURE_ENVIRONMENT=production" >> $GITHUB_ENV
 
