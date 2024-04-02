@@ -6,6 +6,12 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project app-one --web",
   "targets": {
+    "type-check": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "yarn tsc --project apps/app-one/tsconfig.app.json --noEmit"
+      }
+    },
     "deploy-azure": {
       "executor": "nx:run-commands",
       "options": {

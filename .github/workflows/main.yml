@@ -54,11 +54,14 @@ jobs:
         if: ${{contains(github.ref, 'refs/pull/')}}
         run: git branch --track main origin/main
 
-      - name: Lint and test affected projects
-        run: yarn nx affected -t lint test --parallel=3
+      - name: Lint affected projects
+        run: yarn nx affected -t lint --parallel=3
+
+      - name: Type check affected projects
+        run: yarn nx affected -t type-check --parallel=3
 
       - name: Build affected projects
-        run: yarn nx affected -t build --parallel=3
+        run: yarn nx affected -t build --parallel=3 --exclude='libs/*'
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
@@ -98,7 +101,7 @@ jobs:
         run: git branch --track main origin/main
 
       - name: Sets Azure environment preview as default
-        run: echo "AZURE_ENVIRONMENT=$GITHUB_HEAD_REF" >> $GITHUB_ENV
+        run: echo "AZURE_ENVIRONMENT=$(echo "$GITHUB_HEAD_REF" | sed 's/[^[:alnum:]]//g' | cut -c1-16)" >> $GITHUB_ENV
 
       - name: Sets Azure environment production for deploy when in main
         if: ${{ github.ref == 'refs/heads/main' }}
@@ -139,8 +142,8 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Sets Azure environment preview as default
-        run: echo "AZURE_ENVIRONMENT=$GITHUB_HEAD_REF" >> $GITHUB_ENV
+      - name: Sets Azure environment preview
+        run: echo "AZURE_ENVIRONMENT=$(echo "$GITHUB_HEAD_REF" | sed 's/[^[:alnum:]]//g' | cut -c1-16)" >> $GITHUB_ENV
 
       - name: Delete deployed preview web apps for affected apps on Azure
         env:
