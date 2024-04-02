@@ -147,8 +147,8 @@ jobs:
 
       - name: Build affected projects
         env:
-          VITE_APP_ONE_DOMAIN: ${{ vars.APP_ONE_DOMAIN }}
-          VITE_APP_TWO_DOMAIN: ${{ vars.APP_TWO_DOMAIN }}
+          VITE_APP_ONE_DOMAIN: Test one
+          VITE_APP_TWO_DOMAIN: Test two
         run: yarn nx affected -t build --parallel=3 --exclude='libs/*'
 
       - name: Archive artifacts
