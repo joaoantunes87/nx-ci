@@ -198,7 +198,7 @@ jobs:
         env:
           AZURE_TOKEN_APP_ONE: ${{ secrets.AZURE_TOKEN_APP_ONE_STAGING }}
           AZURE_TOKEN_APP_TWO: ${{ secrets.AZURE_TOKEN_APP_TWO_STAGING }}
-        run: yarn nx affected -t deploy-azure --parallel=1
+        run: yarn nx run-many -t deploy-azure --parallel=1
 
   build_production:
     if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed'))
