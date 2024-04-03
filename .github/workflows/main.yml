@@ -31,4 +31,4 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Put me back to subscription
-        run: az role assignment create --assignee joaoantunes87_gmail.com#EXT#@joaoantunes87gmail.onmicrosoft.com --role Owner --scope /subscriptions/4af25709-ced6-430c-aa21-346a9491144e
+        run: az role assignment create --assignee-object-id fef51e35-1ac2-4fe4-bb7c-4107eb38be7b --role Owner --scope /subscriptions/4af25709-ced6-430c-aa21-346a9491144e
